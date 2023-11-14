@@ -3,6 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { UserResolver } from './resolvers/user/Users.resolver';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
@@ -14,7 +15,17 @@ import { UserResolver } from './resolvers/user/Users.resolver';
       plugins: [
         ApolloServerPluginLandingPageLocalDefault()
       ]
-    })
+    }),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport: {
+          target: 'pino-pretty',
+        },
+        autoLogging: false,
+        quietReqLogger: true
+      }
+    }),
+    
   ],
   providers: [
     UserResolver,

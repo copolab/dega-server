@@ -12,6 +12,8 @@ import { MongooseConfigService } from './config/mongoose-config/mongoose-config.
 import { Connection } from 'mongoose';
 import { EnvService } from './config/env/env.service';
 import { CONNECTION_NAME } from './config/mongoose-config/constants';
+import { MailerModule } from './mailer/mailer.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -43,7 +45,9 @@ import { CONNECTION_NAME } from './config/mongoose-config/constants';
       useClass: MongooseConfigService,
       connectionName: CONNECTION_NAME,
       inject: [EnvService]
-    })
+    }),
+    MailerModule,
+    EventEmitterModule.forRoot()
   ],
   providers: [
     UserResolver,
